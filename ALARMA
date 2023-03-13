@@ -1,0 +1,94 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+public class MyFrame extends JFrame {
+    
+    Calendar calendar;
+    SimpleDateFormat timeFormat;
+    SimpleDateFormat dayFormat;
+    SimpleDateFormat monthYearFormat;
+    JLabel timeLabel;
+    JLabel dayLabel;
+    JLabel spacerLabel;
+    JLabel monthYearLabel;
+    JTextField alarmField;
+    String time;
+    String day;
+    String monthYear;
+    String alarmTime;
+  
+    public MyFrame(){
+        super("ALARMA");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+        setSize(450,300);
+        setResizable(false);
+        
+        timeFormat= new SimpleDateFormat("HH:mm:ss");
+        dayFormat = new SimpleDateFormat("EEEE");
+        monthYearFormat = new SimpleDateFormat("MM/yyyy");
+        
+        timeLabel= new JLabel();
+        timeLabel.setOpaque(true);
+        timeLabel.setFont(new Font("Times New Roman", Font.BOLD, 48));
+        timeLabel.setForeground(Color.GREEN);
+        timeLabel.setBackground(Color.BLACK);
+        
+        dayLabel = new JLabel();
+        dayLabel.setOpaque(true);
+        dayLabel.setBackground(Color.LIGHT_GRAY);
+        dayLabel.setFont(new Font("Arial", Font.ITALIC, 36));
+        dayLabel.setForeground(Color.DARK_GRAY);
+        
+        monthYearLabel = new JLabel();
+        monthYearLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        monthYearLabel.setForeground(Color.GRAY);
+        
+        spacerLabel = new JLabel();
+        spacerLabel.setPreferredSize(new Dimension(150, 0));
+        
+        alarmField = new JTextField(10);
+        alarmField.setFont(new Font("Arial", Font.PLAIN, 24));
+        
+        add(timeLabel);
+        add(spacerLabel);
+        add(dayLabel);
+        add(monthYearLabel);
+        add(alarmField);
+        
+        setVisible(true); 
+        setTime();
+    }
+
+    public void setTime(){
+        while(true){
+            time = timeFormat.format(Calendar.getInstance().getTime());
+            day = dayFormat.format(Calendar.getInstance().getTime());
+            monthYear = monthYearFormat.format(Calendar.getInstance().getTime());
+            alarmTime = alarmField.getText();
+            
+            timeLabel.setText(time);
+            dayLabel.setText(day);
+            monthYearLabel.setText(monthYear);
+            
+            // Verificar si es la hora de la alarma
+            if (time.equals(alarmTime + ":00")) {
+                JOptionPane.showMessageDialog(this, "¡Hora de despertar!", "ALARMA", JOptionPane.INFORMATION_MESSAGE);
+            }
+        
+            try{
+                Thread.sleep(1000);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+    }
+}
